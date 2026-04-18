@@ -6,6 +6,6 @@ def format_timestamp(seconds: float) -> str:
     """
 
     minutes = int(seconds // 60)
-    seconds = int(seconds % 60)
+    remaining_seconds = int(seconds % 60)
 
-    return f"{minutes:02}:{seconds:02}"
+    return f"{minutes:02}:{remaining_seconds:02}"

@@ -39,11 +39,16 @@ async def upload_audio(
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    # Run Whisper transcription
-    raw_segments = transcribe_audio(file_path)
+    try:
+        # Run Whisper transcription
+        raw_segments = transcribe_audio(file_path)
 
-    # Run segmentation logic
-    segments = segment_transcript(raw_segments)
+        # Run segmentation logic
+        segments = segment_transcript(raw_segments)
+    finally:
+        # Clean up temporary file regardless of success or failure
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
     return {
         "job_id": job_id,
