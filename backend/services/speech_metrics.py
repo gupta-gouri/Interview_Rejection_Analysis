@@ -1,6 +1,6 @@
 import json
 import re
-from backend.data.filler_words import FILLER_WORDS
+from data.filler_words import FILLER_WORDS
 
 # 1️⃣ FILLER DETECTOR
 def detect_fillers(transcript):
