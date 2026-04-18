@@ -5,7 +5,6 @@ load_dotenv()  # This loads the variables from .env
 
 # Now your code can access the key
 api_key = os.getenv("GEMINI_API_KEY")
-print(f"DEBUG: Key found: {os.getenv('GEMINI_API_KEY') is not None}")
 
 from services.llm_service import evaluate_response
 from services.star_detector import detect_star

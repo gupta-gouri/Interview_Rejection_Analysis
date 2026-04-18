@@ -1,21 +1,24 @@
 ROLE_WEIGHTS = {
     "SDE": {
-        "depth_score": 0.4,
+        "depth_score": 0.35,
         "clarity_score": 0.2,
         "structure_score": 0.2,
-        "communication_score": 0.2
+        "communication_score": 0.15,
+        "relevance_score": 0.1
     },
     "HR": {
-        "communication_score": 0.4,
-        "structure_score": 0.3,
+        "communication_score": 0.35,
+        "structure_score": 0.25,
         "clarity_score": 0.2,
-        "depth_score": 0.1
+        "depth_score": 0.1,
+        "relevance_score": 0.1
     },
     "Analyst": {
         "clarity_score": 0.3,
-        "structure_score": 0.3,
+        "structure_score": 0.25,
         "depth_score": 0.2,
-        "communication_score": 0.2
+        "communication_score": 0.15,
+        "relevance_score": 0.1
     }
 }
 

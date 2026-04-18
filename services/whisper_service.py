@@ -3,7 +3,10 @@ from config import WHISPER_MODEL
 
 
 # Load Whisper model once at startup
-model = whisper.load_model(WHISPER_MODEL)
+try:
+    model = whisper.load_model(WHISPER_MODEL)
+except Exception as e:
+    raise RuntimeError(f"Failed to load Whisper model '{WHISPER_MODEL}': {e}")
 
 
 def transcribe_audio(file_path: str):
