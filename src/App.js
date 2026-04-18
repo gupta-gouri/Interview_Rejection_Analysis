@@ -1,0 +1,276 @@
+import React, { useState, useEffect } from 'react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Upload, FileAudio, Activity, BrainCircuit, CheckCircle, AlertCircle } from 'lucide-react';
+
+const timelineData = [
+  { time: '0:00', score: 80 },
+  { time: '1:00', score: 85 },
+  { time: '2:00', score: 70 },
+  { time: '3:00', score: 40 },
+  { time: '4:00', score: 65 },
+  { time: '5:00', score: 55 },
+  { time: '6:00', score: 75 },
+  { time: '7:00', score: 90 },
+];
+
+const heatmapData = [
+  { id: 1, question: "Q1: Background & Intro", score: 85, issue: null },
+  { id: 2, question: "Q2: System Architecture", score: 40, issue: "Hesitation Spike" },
+  { id: 3, question: "Q3: Database Schema", score: 65, issue: "Filler Burst" },
+  { id: 4, question: "Q4: Scaling Strategy", score: 45, issue: "Weak Explanation" },
+  { id: 5, question: "Q5: Behavioral / Conflict", score: 90, issue: null },
+];
+
+const recommendations = [
+  { title: "Use STAR format", desc: "For behavioral questions to structure your answers.", type: "structure" },
+  { title: "Reduce filler density", desc: "Practice 1-second pauses before technical answers.", type: "speech" },
+  { title: "Add implementation details", desc: "System design answers lacked concrete specifics.", type: "technical" }
+];
+
+const scores = [
+  { label: "Confidence", value: 72, trend: "+5%", color: "text-blue-400" },
+  { label: "Clarity", value: 65, trend: "-2%", color: "text-indigo-400" },
+  { label: "Depth", value: 58, trend: "-10%", color: "text-red-400" },
+  { label: "Communication", value: 80, trend: "+8%", color: "text-emerald-400" },
+];
+
+const processingSteps = [
+  "Initializing AI engines...",
+  "Transcribing audio...",
+  "Analyzing speech patterns...",
+  "Generating report..."
+];
+
+function App() {
+  const [appState, setAppState] = useState('upload'); // 'upload', 'processing', 'dashboard'
+  const [stepIndex, setStepIndex] = useState(0);
+
+  useEffect(() => {
+    if (appState === 'processing') {
+      setStepIndex(0);
+      const interval = setInterval(() => {
+        setStepIndex((prev) => {
+          if (prev >= processingSteps.length - 1) {
+            clearInterval(interval);
+            setTimeout(() => setAppState('dashboard'), 1500);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 1500);
+      return () => clearInterval(interval);
+    }
+  }, [appState]);
+
+  if (appState === 'upload') {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+        {/* Abstract Backgrounds */}
+        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px]" />
+        
+        <div className="glass-panel max-w-xl w-full p-10 rounded-3xl relative z-10 flex flex-col items-center">
+          <div className="w-20 h-20 bg-blue-500/10 rounded-full flex items-center justify-center mb-6 animate-float">
+            <Upload size={36} className="text-blue-400" />
+          </div>
+          <h1 className="text-4xl font-extrabold mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500 text-center">
+            Upload Interview
+          </h1>
+          <p className="text-gray-400 mb-10 text-center text-sm px-4">
+            Our AI will analyze your audio for confidence, clarity, and depth to provide actionable feedback.
+          </p>
+          
+          <div className="w-full space-y-6">
+            <div className="border-2 border-dashed border-white/20 rounded-2xl p-10 text-center hover:border-blue-500/50 hover:bg-white/5 transition-all cursor-pointer group">
+              <FileAudio size={40} className="mx-auto text-gray-500 mb-4 group-hover:text-blue-400 transition-colors" />
+              <p className="text-base text-gray-300 font-medium">Drag & drop your audio file</p>
+              <p className="text-xs text-gray-500 mt-2">MP3, WAV up to 50MB</p>
+            </div>
+            
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-400">Target Role</label>
+              <select className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none text-sm">
+                <option className="bg-[#050505] text-white">SDE</option>
+                <option className="bg-[#050505] text-white">HR</option>
+                <option className="bg-[#050505] text-white">Analyst</option>
+              </select>
+            </div>
+            
+            <button 
+              onClick={() => setAppState('processing')}
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-4 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all active:scale-[0.98] mt-4"
+            >
+              Analyze Interview
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (appState === 'processing') {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+        <div className="relative w-48 h-48 flex items-center justify-center mb-10">
+          <div className="absolute inset-0 border-[3px] border-blue-500/20 rounded-full"></div>
+          <div className="absolute inset-0 border-[3px] border-blue-500 rounded-full border-t-transparent animate-spin duration-1000"></div>
+          <div className="absolute inset-0 bg-blue-500/10 rounded-full animate-pulse-ring"></div>
+          <BrainCircuit size={48} className="text-blue-400 animate-pulse" />
+        </div>
+        <h2 className="text-3xl font-bold text-white tracking-wide mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
+          Processing Interview
+        </h2>
+        <div className="flex flex-col items-center space-y-4">
+          {processingSteps.map((step, idx) => (
+            <div 
+              key={idx} 
+              className={`text-base transition-all duration-700 ease-out flex items-center
+                ${idx === stepIndex ? 'text-blue-400 font-medium scale-110 translate-x-2' : 
+                  idx < stepIndex ? 'text-gray-600 translate-x-0' : 'text-gray-800 translate-x-0'}`}
+            >
+              {idx < stepIndex && <CheckCircle size={14} className="mr-2 text-emerald-500" />}
+              {idx === stepIndex && <Activity size={14} className="mr-2 animate-pulse" />}
+              {step}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen p-6 md:p-8 lg:p-10 max-w-7xl mx-auto">
+      <header className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div>
+          <div className="inline-flex items-center space-x-2 px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-full text-xs font-semibold mb-4">
+            <Activity size={14} />
+            <span>Analysis Complete</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+            Interview Dashboard
+          </h1>
+          <p className="text-gray-400 mt-2 text-sm font-medium">Role: SDE • Duration: 45m 12s</p>
+        </div>
+        <button 
+          onClick={() => setAppState('upload')} 
+          className="text-sm font-medium text-gray-300 hover:text-white transition-all border border-white/10 px-5 py-2.5 rounded-xl hover:bg-white/10 active:scale-95 flex items-center"
+        >
+          <Upload size={16} className="mr-2" /> New Analysis
+        </button>
+      </header>
+      
+      {/* Scorecards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+        {scores.map((score, i) => (
+          <div key={i} className="glass-panel p-6 rounded-3xl relative overflow-hidden group hover:border-white/20 transition-all">
+            <div className={`absolute top-0 left-0 w-1 h-full ${score.color.replace('text-', 'bg-')}`}></div>
+            <h3 className="text-gray-400 font-medium text-sm mb-3">{score.label}</h3>
+            <div className="flex items-end justify-between">
+              <p className="text-4xl font-extrabold tracking-tight text-white">{score.value}<span className="text-xl text-gray-500 font-semibold">%</span></p>
+              <span className={`text-xs font-bold px-2.5 py-1 rounded-md ${score.trend.startsWith('+') ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
+                {score.trend}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+        {/* Main Analysis Area */}
+        <div className="lg:col-span-2 space-y-6 md:space-y-8">
+          
+          {/* Timeline Chart */}
+          <div className="glass-panel p-6 md:p-8 rounded-3xl">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-xl font-bold flex items-center text-white"><Activity className="mr-3 text-blue-400" size={22}/> Confidence Timeline</h2>
+            </div>
+            <div className="h-72 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={timelineData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.4}/>
+                      <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff08" vertical={false} />
+                  <XAxis dataKey="time" stroke="#ffffff40" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#9ca3af'}} dy={10} />
+                  <YAxis stroke="#ffffff40" axisLine={false} tickLine={false} tick={{fontSize: 12, fill: '#9ca3af'}} domain={[0, 100]} />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '12px', color: '#fff', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)' }}
+                    itemStyle={{ color: '#60A5FA', fontWeight: 'bold' }}
+                  />
+                  <Area type="monotone" dataKey="score" stroke="#3B82F6" strokeWidth={3} fillOpacity={1} fill="url(#colorScore)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Question Breakdown Heatmap */}
+          <div className="glass-panel p-6 md:p-8 rounded-3xl">
+            <h2 className="text-xl font-bold mb-8 flex items-center text-white"><AlertCircle className="mr-3 text-indigo-400" size={22}/> Weakness Heatmap</h2>
+            <div className="space-y-4">
+              {heatmapData.map((item) => (
+                <div key={item.id} className="group flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.06] transition-all">
+                  <div className="sm:w-1/3 text-sm text-gray-200 font-medium tracking-wide">{item.question}</div>
+                  <div className="flex-1 h-2.5 bg-black/40 rounded-full overflow-hidden flex shadow-inner">
+                    <div 
+                      className={`h-full transition-all duration-1000 ease-out ${
+                        item.score > 75 ? 'bg-gradient-to-r from-emerald-500 to-emerald-300' : 
+                        item.score > 50 ? 'bg-gradient-to-r from-yellow-500 to-yellow-300' : 
+                        'bg-gradient-to-r from-red-500 to-red-400'
+                      }`}
+                      style={{ width: `${item.score}%` }}
+                    />
+                  </div>
+                  <div className="sm:w-1/4 text-right text-xs font-semibold">
+                    {item.issue ? 
+                      <span className="inline-flex items-center text-red-400 bg-red-400/10 px-2.5 py-1.5 rounded-lg border border-red-400/20 shadow-sm"><AlertCircle size={14} className="mr-1.5"/>{item.issue}</span> : 
+                      <span className="inline-flex items-center text-emerald-400 bg-emerald-400/10 px-2.5 py-1.5 rounded-lg border border-emerald-400/20 shadow-sm"><CheckCircle size={14} className="mr-1.5"/>Clear</span>
+                    }
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6 md:space-y-8">
+          
+          {/* Actionable Feedback */}
+          <div className="glass-panel p-6 md:p-8 rounded-3xl">
+            <h2 className="text-xl font-bold mb-8 flex items-center text-white"><BrainCircuit className="mr-3 text-emerald-400" size={22}/> Recommendation Panel</h2>
+            <div className="space-y-6">
+              {recommendations.map((rec, index) => (
+                <div key={index} className="relative pl-7 before:absolute before:left-0 before:top-1.5 before:w-2.5 before:h-2.5 before:bg-gradient-to-b before:from-blue-400 before:to-indigo-500 before:rounded-full before:shadow-[0_0_10px_rgba(59,130,246,0.8)]">
+                  <h4 className="text-sm font-bold text-gray-100 mb-1.5">{rec.title}</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed font-medium">{rec.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Checklist */}
+          <div className="glass-panel p-6 md:p-8 rounded-3xl bg-gradient-to-b from-white/[0.03] to-transparent">
+            <h3 className="text-base font-bold text-gray-200 mb-6 flex items-center"><Activity size={18} className="mr-2 text-blue-400"/> Deliverables Checklist</h3>
+            <div className="space-y-4">
+              {["Upload UI ready", "Processing animation", "Scorecards", "Timeline graph", "Weakness panel visible", "Recommendation panel visible"].map((item, i) => (
+                <div key={i} className="flex items-center text-sm text-gray-300 font-medium group">
+                  <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center mr-3 border border-emerald-500/30 group-hover:bg-emerald-500/30 transition-colors">
+                    <CheckCircle size={12} className="text-emerald-400"/>
+                  </div>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
