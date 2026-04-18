@@ -1,0 +1,14 @@
+{
+    "filler_density": 0.2,
+    "filler_count": 3,
+    "avg_pause_duration": 2.5,
+    "pause_spike_positions": [
+        {
+            "start": 12,
+            "end": 15,
+            "duration": 3
+        }
+    ],
+    "speech_speed": 45.0,
+    "hesitation_score": 0.18
+}
