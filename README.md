@@ -1,2 +1,5 @@
-# Interview_Rejection_Analysis
-This repo contains all the files and folders related to the Interview Rejection Analysis system.
+# Interview Rejection Analysis
+
+Frontend Dashboard by Siddhi
+
+This project is a React-based dashboard for analyzing interview rejections.
