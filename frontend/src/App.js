@@ -80,10 +80,10 @@ function App() {
 
   // Mapped Data for Dashboard
   const dynamicScores = analysisResults ? [
-    { label: "Clarity", value: analysisResults.llm_scores?.clarity_score ? Math.round(analysisResults.llm_scores.clarity_score * 100) : 0, trend: "AI Score", color: "text-blue-400" },
-    { label: "Depth", value: analysisResults.llm_scores?.depth_score ? Math.round(analysisResults.llm_scores.depth_score * 100) : 0, trend: "AI Score", color: "text-indigo-400" },
-    { label: "Structure", value: analysisResults.llm_scores?.structure_score ? Math.round(analysisResults.llm_scores.structure_score * 100) : 0, trend: "STAR", color: "text-red-400" },
-    { label: "Overall Weighted", value: analysisResults.final_result ? Math.round(analysisResults.final_result * 100) : 0, trend: role, color: "text-emerald-400" },
+    { label: "Clarity", value: analysisResults.llm_scores?.clarity_score ? Math.round((analysisResults.llm_scores.clarity_score / 5) * 100) : 0, trend: "AI Score", color: "text-blue-400" },
+    { label: "Depth", value: analysisResults.llm_scores?.depth_score ? Math.round((analysisResults.llm_scores.depth_score / 5) * 100) : 0, trend: "AI Score", color: "text-indigo-400" },
+    { label: "Structure", value: analysisResults.llm_scores?.structure_score ? Math.round((analysisResults.llm_scores.structure_score / 5) * 100) : 0, trend: "STAR", color: "text-red-400" },
+    { label: "Overall Weighted", value: analysisResults.final_result?.final_score ? Math.round((analysisResults.final_result.final_score / 5) * 100) : 0, trend: role, color: "text-emerald-400" },
   ] : [];
 
   const dynamicHeatmapData = analysisResults?.weaknesses ? analysisResults.weaknesses.map((w, i) => {
@@ -370,7 +370,7 @@ function App() {
               </div>
               <div className="flex items-center justify-between text-sm text-gray-300 font-medium">
                   <span>STAR Components Found</span>
-                  <span className="text-emerald-400 font-bold">{analysisResults?.star_result?.found_components?.length || 0}/4</span>
+                  <span className="text-emerald-400 font-bold">{Object.values(analysisResults?.star_result?.components_found || {}).filter(Boolean).length || 0}/4</span>
               </div>
             </div>
           </div>
