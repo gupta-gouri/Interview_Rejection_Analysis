@@ -1,7 +1,7 @@
 import os
 from google import genai
 from google.genai import types
-from utils.parser import parse_json
+from backend.utils.parser import parse_json
 
 # Keep these braces as they are (no doubling needed with this method)
 PROMPT_TEMPLATE = """
@@ -42,12 +42,22 @@ def call_llm(client, prompt: str):
     )
     return response.text
 
-def evaluate_response(response: str):
+def evaluate_response(full_transcript: str):
     # Initialize the client
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
     
+    # Query used for semantic retrieval
+    query = "Evaluate the candidate response based on: Clarity, Structure, Technical Depth, Relevance, Communication"
+    
+    # Get relevant context from RAG pipeline
+    from rag_pipeline.pipeline import get_relevant_context
+    context = get_relevant_context(full_transcript, query)
+    
+    # We include the query along with the context as per instructions
+    combined_input = f"{context}\n\nAdditional Context/Query: {query}"
+    
     # Generate the prompt
-    prompt = build_prompt(response)
+    prompt = build_prompt(combined_input)
     
     # Get LLM output
     raw_output = call_llm(client, prompt)

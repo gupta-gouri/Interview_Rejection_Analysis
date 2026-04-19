@@ -2,4 +2,4 @@
 
 Frontend Dashboard by Siddhi
 
-This project is a React-based dashboard for analyzing interview rejections.
+This project is a React-based dashboard for analyzing interview rejections

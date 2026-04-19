@@ -1,5 +1,5 @@
-from config import MAX_SEGMENT_CHAR_LENGTH
-from utils.time_formatter import format_timestamp
+from backend.config import MAX_SEGMENT_CHAR_LENGTH
+from backend.utils.time_formatter import format_timestamp
 
 
 def segment_transcript(segments, max_chunk_chars=MAX_SEGMENT_CHAR_LENGTH):

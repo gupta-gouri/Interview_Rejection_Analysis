@@ -1,5 +1,5 @@
 import whisper
-from config import WHISPER_MODEL
+from backend.config import WHISPER_MODEL
 
 
 # Load Whisper model once at startup
