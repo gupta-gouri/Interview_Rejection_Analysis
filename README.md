@@ -1,3 +1,5 @@
 # Interview Rejection Analysis
 
-This project is a React-based dashboard for analyzing interview rejections.
+Frontend Dashboard by Siddhi
+
+This project is a React-based dashboard for analyzing interview rejections

@@ -12,8 +12,7 @@ ROLE_WEIGHTS = {
         "depth_score": 0.1
     },
     "Analyst": {
-        "clarity_score": 0.3,
-        "structure_score": 0.3,
+          "structure_score": 0.3,
         "depth_score": 0.2,
         "communication_score": 0.2
     }
