@@ -1,9 +1,13 @@
 import os
 from dotenv import load_dotenv
-from fastapi import FastAPI
-from routers.upload import router as upload_router
 
-load_dotenv()  # This loads the variables from .env
+# Define base path dynamically and load .env from backend folder
+base_path = os.path.dirname(os.path.abspath(__file__))
+env_path = os.path.join(base_path, ".env")
+load_dotenv(env_path)  # This loads the variables from .env
+
+from fastapi import FastAPI
+from backend.routers.upload import router as upload_router
 
 from fastapi.middleware.cors import CORSMiddleware
 

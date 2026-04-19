@@ -2,16 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Upload, FileAudio, Activity, BrainCircuit, CheckCircle, AlertCircle } from 'lucide-react';
 
-const defaultTimelineData = [
-  { time: '0:00', score: 80 },
-  { time: '1:00', score: 85 },
-  { time: '2:00', score: 70 },
-  { time: '3:00', score: 40 },
-  { time: '4:00', score: 65 },
-  { time: '5:00', score: 55 },
-  { time: '6:00', score: 75 },
-  { time: '7:00', score: 90 },
-];
+// No default mock data, wait for real backend data.
 
 const processingSteps = [
   "Initializing AI engines...",
@@ -127,9 +118,8 @@ function App() {
 
   const timelineData = analysisResults?.segments ? analysisResults.segments.map((seg, idx) => ({
       time: seg.start,
-      // Create a pseudo-score to visualize timeline fluctuations (since we don't have per-segment scores yet)
-      score: 50 + (Math.random() * 40)
-  })) : defaultTimelineData;
+      score: analysisResults.final_result ? Math.round(analysisResults.final_result * 100) : 0
+  })) : [];
 
 
   if (appState === 'upload') {

@@ -3,14 +3,14 @@ import uuid
 import shutil
 import os
 
-from config import UPLOAD_DIR, ALLOWED_AUDIO_EXTENSIONS
-from services.whisper_service import transcribe_audio
-from services.segmentation_service import segment_transcript
-from services.speech_metrics import analyze_speech
-from services.llm_service import evaluate_response
-from services.star_detector import detect_star
-from services.role_weighting import calculate_weighted_score, ROLE_WEIGHTS
-from services.weakness_analyzer import identify_weaknesses
+from backend.config import UPLOAD_DIR, ALLOWED_AUDIO_EXTENSIONS
+from ingestion.whisper_service import transcribe_audio
+from ingestion.segmentation_service import segment_transcript
+from ingestion.speech_metrics import analyze_speech
+from rag_pipeline.llm_service import evaluate_response
+from rag_pipeline.star_detector import detect_star
+from rag_pipeline.role_weighting import calculate_weighted_score, ROLE_WEIGHTS
+from rag_pipeline.weakness_analyzer import identify_weaknesses
 
 
 router = APIRouter()
